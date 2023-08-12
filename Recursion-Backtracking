@@ -1,0 +1,50 @@
+Q1.
+
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+
+        rows = len(board)
+        cols = len(board[0])
+
+        global flag
+        flag = False
+
+        def dfs(r, c, index):
+            global flag
+
+            if index == len(word):
+                flag = True
+                return
+
+            if (r >= 0 and r < rows) and (c >= 0 and c < cols ) and board[r][c] == word[index]:
+                
+                temp = board[r][c]
+                board[r][c] = None #visited
+
+                dfs(r-1, c, index+1)
+                dfs(r, c-1, index+1)
+                dfs(r, c+1, index+1)
+                dfs(r+1, c, index+1)
+
+                board[r][c] = temp
+
+        for i in range(rows):
+            for j in range(cols):
+                if board[i][j] == word[0]:
+                    print('start:' + board[i][j])
+                    dfs(i, j, 0)
+
+        dfs(rows, cols, 0)
+
+        return flag
+
+
